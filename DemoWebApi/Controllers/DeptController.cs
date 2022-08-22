@@ -36,7 +36,22 @@ namespace DemoWebApi.Controllers
                 return BadRequest("Id is NUll");
             }
 
-            var data = from dept in db.Depts where dept.Id == id select new { Id = dept.Id, Name = dept.Name, Location = dept.Location };
+            //var data = (from dept in db.Depts where dept.Id == id select new { Id = dept.Id, Name = dept.Name, Location = dept.Location }).FirstOrDefault();
+            var data = db.Depts.Where(dept => dept.Id == id).Select(dept => new { Id = dept.Id, Name = dept.Name, Location = dept.Location }).FirstOrDefault();
+
+            if (data == null) return NotFound($" Department {id} is not present");
+            return Ok(data);
+        }
+
+
+        // http://localhost:20457/api/dept/ListCity?city=pune
+        [HttpGet]
+        [Route("listCity")]
+        public IActionResult GetCity([FromQuery] string city)
+        {
+            if (city == null) return BadRequest("City is NUll");
+            var data = db.Depts.Where(dept => dept.Location == city).Select(dept => new { Id = dept.Id, Name = dept.Name, Location = dept.Location });
+            if (data == null) return NotFound($"There are no departments in {city} city!");
             return Ok(data);
         }
     }
