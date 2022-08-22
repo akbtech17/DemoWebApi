@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using DemoWebApi.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using DemoWebApi.ViewModel;
 
 namespace DemoWebApi.Controllers
 {
@@ -53,6 +55,13 @@ namespace DemoWebApi.Controllers
             var data = db.Depts.Where(dept => dept.Location == city).Select(dept => new { Id = dept.Id, Name = dept.Name, Location = dept.Location });
             // data is array
             if (data.Count() == 0) return NotFound($"There are no departments in {city} city!");
+            return Ok(data);
+        }
+
+        [HttpGet]
+        [Route("ShowDept")]
+        public IActionResult GetDeptInfo() {
+            var data = db.DeptInfo_VMs.FromSqlInterpolated<DeptInfoVM>($"DeptInfo");
             return Ok(data);
         }
     }

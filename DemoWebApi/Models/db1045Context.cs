@@ -1,4 +1,5 @@
 ﻿using System;
+using DemoWebApi.ViewModel;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -19,6 +20,7 @@ namespace DemoWebApi.Models
 
         public virtual DbSet<Dept> Depts { get; set; }
         public virtual DbSet<Emp> Emps { get; set; }
+        public virtual DbSet<DeptInfoVM> DeptInfo_VMs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
