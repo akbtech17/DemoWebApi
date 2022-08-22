@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using DemoWebApi.ViewModel;
+using System;
 
 namespace DemoWebApi.Controllers
 {
@@ -15,7 +16,7 @@ namespace DemoWebApi.Controllers
         db1045Context db = new db1045Context();
 
         [HttpGet]
-        [Route("listdept")]
+        [Route("/")]
         public IActionResult GetDept()
         {
             // EF common syntax
@@ -63,6 +64,28 @@ namespace DemoWebApi.Controllers
         public IActionResult GetDeptInfo() {
             var data = db.DeptInfo_VMs.FromSqlInterpolated<DeptInfoVM>($"DeptInfo");
             return Ok(data);
+        }
+
+        [HttpPost]
+        [Route("AddDept")]
+        public IActionResult PostDept(Dept dept) {
+                
+            if (ModelState.IsValid) {
+                try
+                {
+                    //db.Depts.Add(dept);
+                    //db.SaveChanges();
+
+                    db.Database.ExecuteSqlInterpolated($"spAddRecordsToDept {dept.Id}, {dept.Name}, {dept.Location}");
+
+                    return Created("Record Successfully Added", dept);
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.InnerException.Message);
+                }
+            }
+            return BadRequest("Something went wrong!");
         }
     }
 }
