@@ -51,7 +51,8 @@ namespace DemoWebApi.Controllers
         {
             if (city == null) return BadRequest("City is NUll");
             var data = db.Depts.Where(dept => dept.Location == city).Select(dept => new { Id = dept.Id, Name = dept.Name, Location = dept.Location });
-            if (data == null) return NotFound($"There are no departments in {city} city!");
+            // data is array
+            if (data.Count() == 0) return NotFound($"There are no departments in {city} city!");
             return Ok(data);
         }
     }
