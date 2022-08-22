@@ -19,7 +19,7 @@ namespace DemoWebApi.Controllers
 
         // GET api/<ValuesController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public string Get   (int id)
         {
             return Fruits[id];
         }
@@ -33,9 +33,10 @@ namespace DemoWebApi.Controllers
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IEnumerable<string> Put(int id, [FromBody] string value)
         {
             Fruits[id] = value;
+            return Fruits;
         }
 
         // DELETE api/<ValuesController>/5
