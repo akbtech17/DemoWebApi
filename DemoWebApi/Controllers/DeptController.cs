@@ -102,7 +102,7 @@ namespace DemoWebApi.Controllers
                     odept.Location = dept.Location;
 
                     db.SaveChanges();
-                    return Ok("Record Edited Successfully");
+                    return Ok();
                 }
                 catch (Exception ex)
                 {
