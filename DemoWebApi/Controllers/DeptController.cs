@@ -16,7 +16,7 @@ namespace DemoWebApi.Controllers
         db1045Context db = new db1045Context();
 
         [HttpGet]
-        [Route("/")]
+        [Route("listdept")]
         public IActionResult GetDept()
         {
             // EF common syntax
@@ -86,6 +86,40 @@ namespace DemoWebApi.Controllers
                 }
             }
             return BadRequest("Something went wrong!");
+        }
+
+        [HttpPut]
+        [Route("EditDept/{id}")]
+        public IActionResult PutDept(int id, Dept dept)
+        {
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Dept odept = db.Depts.Find(id);
+                    odept.Name = dept.Name;
+                    odept.Location = dept.Location;
+
+                    db.SaveChanges();
+                    return Ok("Record Edited Successfully");
+                }
+                catch (Exception ex)
+                {
+                    return BadRequest(ex.InnerException.Message);
+                }
+            }
+            return BadRequest("Something went wrong!");
+        }
+
+
+        [HttpDelete]
+        [Route("DeleteDept/{id}")]
+        public IActionResult DeleteDept(int id) {
+            var data = db.Depts.Find(id);
+            db.Depts.Remove(data);
+            db.SaveChanges();
+            return Ok("Department deleted successfully!");
         }
     }
 }
